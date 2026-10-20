@@ -14,9 +14,9 @@ public class Report {
     @SequenceGenerator(name = "sec_report", sequenceName = "sec_report", allocationSize = 1)
     @Column(name = "id_report")
     private Integer id;
-
-    @Column(name = "id_user", nullable = false)
-    private Integer userId;
+    //cambio user por username
+    @Column(name = "username", nullable = false, length = 50)
+    private String username;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_publication", nullable = false)
@@ -48,17 +48,19 @@ public class Report {
     @Column(name = "modified")
     private LocalDateTime modified;
 
-    @Column(name = "created_id", nullable = false)
-    private Integer createdId;
+   //cambio en get y set de created id y modified id
+    @Column(name = "created_by", nullable = false, length = 50)
+    private String createdBy;
 
-    @Column(name = "modified_id")
-    private Integer modifiedId;
+    @Column(name = "modified_by", length = 50)
+    private String modifiedBy;
 
     // Getters y Setters...
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public Integer getUserId() { return userId; }
-    public void setUserId(Integer userId) { this.userId = userId; }
+        //cambio en get y set
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
     public Publication getPublication() { return publication; }
     public void setPublication(Publication publication) { this.publication = publication; }
     public String getReason() { return reason; }
@@ -73,8 +75,9 @@ public class Report {
     public void setCreated(LocalDateTime created) { this.created = created; }
     public LocalDateTime getModified() { return modified; }
     public void setModified(LocalDateTime modified) { this.modified = modified; }
-    public Integer getCreatedId() { return createdId; }
-    public void setCreatedId(Integer createdId) { this.createdId = createdId; }
-    public Integer getModifiedId() { return modifiedId; }
-    public void setModifiedId(Integer modifiedId) { this.modifiedId = modifiedId; }
+       //cambio en get y set de created id y modified id
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    public String getModifiedBy() { return modifiedBy; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
 }

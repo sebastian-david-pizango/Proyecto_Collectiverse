@@ -36,12 +36,12 @@ public class Category {
     @UpdateTimestamp
     @Column(name = "modified")
     private LocalDateTime modified;
+   //cambio en get y set de created id y modified id
+    @Column(name = "created_by", nullable = false, length = 50)
+    private String createdBy;
 
-    @Column(name = "created_id", nullable = false)
-    private Integer createdId;
-
-    @Column(name = "modified_id")
-    private Integer modifiedId;
+    @Column(name = "modified_by", length = 50)
+    private String modifiedBy;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -57,8 +57,9 @@ public class Category {
     public void setCreated(LocalDateTime created) { this.created = created; }
     public LocalDateTime getModified() { return modified; }
     public void setModified(LocalDateTime modified) { this.modified = modified; }
-    public Integer getCreatedId() { return createdId; }
-    public void setCreatedId(Integer createdId) { this.createdId = createdId; }
-    public Integer getModifiedId() { return modifiedId; }
-    public void setModifiedId(Integer modifiedId) { this.modifiedId = modifiedId; }
+       //cambio en get y set de created id y modified id
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    public String getModifiedBy() { return modifiedBy; }
+    public void setModifiedBy(String modifiedBy) { this.modifiedBy = modifiedBy; }
 }
