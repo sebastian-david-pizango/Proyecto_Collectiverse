@@ -15,13 +15,14 @@
 
 - Esta carpeta contiene el entorno virtual de spring que usamos entidades que seran nuestras tablas para el modelo de datos y con su repositorio.
 
+```
 src/
 ├── main/
 │   ├── java/
 │   │   └── com/collectiverse/collectiverse/
-│   │       ├── CollectiverseApplication.java      
+│   │       ├── CollectiverseApplication.java      # Clase principal (Spring Boot)
 │   │       └── dominio/
-│   │           ├── entity/                        # Entidades
+│   │           ├── entity/                        # Entidades del modelo de datos
 │   │           │   ├── Category.java
 │   │           │   ├── CollectionEntity.java
 │   │           │   ├── Favorite.java
@@ -31,7 +32,7 @@ src/
 │   │           │   ├── Publication.java
 │   │           │   ├── Rating.java
 │   │           │   └── Report.java
-│   │           └── repository/                    # Repositorios
+│   │           └── repository/                    # Repositorios (acceso a datos)
 │   │               ├── RepoCategory.java
 │   │               ├── RepoCollection.java
 │   │               ├── RepoFavorite.java
@@ -42,8 +43,9 @@ src/
 │   │               ├── RepoRating.java
 │   │               └── RepoReport.java
 │   └── resources/
-│       └── application.properties               
+│       └── application.properties                 # Configuración de la aplicación
 └── test/
     └── java/
         └── com/collectiverse/collectiverse/
-            └── CollectiverseApplicationTests.java # Pruebas unitarias
+            └── CollectiverseApplicationTests.java 
+```
