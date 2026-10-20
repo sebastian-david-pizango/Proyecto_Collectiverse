@@ -1,7 +1,7 @@
 package com.collectiverse.collectiverse.dominio.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import aQute.bnd.annotation.headers.Category;
+import com.collectiverse.collectiverse.dominio.entity.Category;
 
 
 public interface RepoCategory extends JpaRepository<Category, Integer> {
