@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.collectiverse.collectiverse.dominio.entity.Favorite;
 
-public interface RepoFavorite extends JpaRepository<Favorite, Integer> {
-    boolean existsByUserIdAndPublicationId(Integer userId, Integer publicationId);
+public interface RepoFavorite extends JpaRepository<Favorite, String> {
+    // cambio de UserId a username
+    boolean existsByUsernameAndPublicationId(String username, Integer publicationId);
 }
