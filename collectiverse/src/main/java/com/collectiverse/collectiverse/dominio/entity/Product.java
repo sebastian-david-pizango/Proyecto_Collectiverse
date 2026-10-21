@@ -29,8 +29,8 @@ public class Product {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    @Column(name = "stock", nullable = false)
+    private Integer stock;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
@@ -58,7 +58,7 @@ public class Product {
     @Column(name = "modified")
     private LocalDateTime modified;
 
-   //cambio en get y set de created id y modified id
+    //cambio en get y set de created id y modified id
     @Column(name = "created_by", nullable = false, length = 50)
     private String createdBy;
 
@@ -74,8 +74,8 @@ public class Product {
     public void setCollection(CollectionEntity collection) { this.collection = collection; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    public Integer getStock() { return stock; }
+    public void setStock(Integer stock) { this.stock = stock; }
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
     public List<ProductImage> getImages() { return images; }
@@ -86,7 +86,8 @@ public class Product {
     public void setCreated(LocalDateTime created) { this.created = created; }
     public LocalDateTime getModified() { return modified; }
     public void setModified(LocalDateTime modified) { this.modified = modified; }
-       //cambio en get y set de created id y modified id
+    
+    //cambio en get y set de created id y modified id
     public String getCreatedBy() { return createdBy; }
     public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
     public String getModifiedBy() { return modifiedBy; }
