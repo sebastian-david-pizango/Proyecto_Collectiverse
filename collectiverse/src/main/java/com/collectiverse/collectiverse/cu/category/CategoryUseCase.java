@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.collectiverse.collectiverse.dominio.entity.Category;
 import com.collectiverse.collectiverse.dominio.repository.RepoCategory;
 
-/** Caso de uso: consultar y registrar Category. */
+/** cu: consultar y registrar Category. */
 @Service
 public class CategoryUseCase {
     private final RepoCategory repository;
