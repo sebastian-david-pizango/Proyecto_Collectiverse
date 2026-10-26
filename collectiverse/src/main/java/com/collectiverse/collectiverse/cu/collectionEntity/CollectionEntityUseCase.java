@@ -1,28 +1,57 @@
 package com.collectiverse.collectiverse.cu.collectionEntity;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.collectiverse.collectiverse.cu.category.exception.CategoryNotFoundException;
+import com.collectiverse.collectiverse.cu.collectionEntity.exception.CollectionNotFoundException;
+import com.collectiverse.collectiverse.cu.collectionEntity.request.RequestCollection;
+import com.collectiverse.collectiverse.cu.collectionEntity.response.ResponseCollection;
+import com.collectiverse.collectiverse.dominio.entity.Category;
 import com.collectiverse.collectiverse.dominio.entity.CollectionEntity;
+import com.collectiverse.collectiverse.dominio.repository.RepoCategory;
 import com.collectiverse.collectiverse.dominio.repository.RepoCollection;
 
 /** Caso de uso: consultar y registrar CollectionEntity. */
 @Service
-public class CollectionEntityUseCase {
+public class CollectionEntityUseCase  {
+
     private final RepoCollection repository;
+    private final RepoCategory repoCategory;
 
-    public CollectionEntityUseCase(RepoCollection repository) { this.repository = repository; }
+    public CollectionEntityUseCase(RepoCollection repository, RepoCategory repoCategory) {
+        this.repository = repository;
+        this.repoCategory = repoCategory;
+    }
 
     @Transactional(readOnly = true)
-    public List<CollectionEntity> listar() { return repository.findAll(); }
+    public List<ResponseCollection> listar() {
+        return repository.findAll().stream().map(this::aResponse).toList();
+    }
 
     @Transactional(readOnly = true)
-    public CollectionEntity consultar(Integer id) { return repository.findById(id).orElse(null); }
+    public ResponseCollection consultar(Integer id) {
+        return aResponse(repository.findById(id)
+                .orElseThrow(() -> new CollectionNotFoundException(id)));
+    }
 
     @Transactional
-    public CollectionEntity registrar(CollectionEntity entity) {
-        if (entity == null) return null;
-        entity.setId(null);
-        return repository.save(entity);
+    public ResponseCollection registrar(RequestCollection request, String usuario) {
+        // La categoría debe existir
+        Category category = repoCategory.findById(request.idCategory())
+                .orElseThrow(() -> new CategoryNotFoundException(request.idCategory()));
+        CollectionEntity c = new CollectionEntity();
+        c.setCategory(category);
+        c.setName(request.name());
+        c.setDescription(request.description());
+        c.setCreatedBy(usuario);
+        return aResponse(repository.save(c));
+    }
+
+    // Convierte la entidad en el Response que ve el cliente
+    private ResponseCollection aResponse(CollectionEntity e) {
+        return new ResponseCollection(e.getId(), e.getCategory().getId(), e.getName(), e.getDescription(), e.getStatus());
     }
 }
