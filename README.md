@@ -234,8 +234,26 @@ spring.datasource.driver-class-name=org.postgresql.Driver
 
 ### Captura de la ejecución
 
-<!-- COMPLETAR: subir una captura de la app levantada (consola de Spring Boot) y de las tablas en Neon -->
-![Ejecución de la aplicación](capturas/ejecucion.png)
+- Ejecución con get para la primera categoría
+  
+![Ejecución categoria uno](https://github.com/sebastian-david-pizango/Proyecto_Collectiverse/blob/main/Imagenes%20Ejecucion/Categoria%20Get%201.png)
+
+- Ejecución con get para ver todas las categorias
+  
+![Ejecución todas las categorías](https://github.com/sebastian-david-pizango/Proyecto_Collectiverse/blob/main/Imagenes%20Ejecucion/Categoria%20Get.png)
+
+- Ejecución para ver el exception de la categoria
+  
+![Ejecución categoría excpetion](https://github.com/sebastian-david-pizango/Proyecto_Collectiverse/blob/main/Imagenes%20Ejecucion/Categoria%20excepcion.png)
+
+- Ejecución para categoria uno por consola
+  
+![Ejecución categoría consola](https://github.com/sebastian-david-pizango/Proyecto_Collectiverse/blob/main/Imagenes%20Ejecucion/Categoria%20consola.png)
+
+- Ejecución para ver el exception de la categoria por consola
+  
+![Ejecución categoría excpetion consola](https://github.com/sebastian-david-pizango/Proyecto_Collectiverse/blob/main/Imagenes%20Ejecucion/Categoria%20consola%20excepcion.png)
+
 
 ## Flujo de trabajo en equipo
 
