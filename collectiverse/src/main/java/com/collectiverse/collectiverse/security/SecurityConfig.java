@@ -30,14 +30,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated())
-            .httpBasic(Customizer.withDefaults());
-        return http.build();
-    }
+    http
+        .csrf(csrf -> csrf.disable())
+        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            .requestMatchers("/api/me").authenticated()
+            .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+            .anyRequest().authenticated())
+        // Responde 401 sin el header que hace aparecer el popup del navegador
+        .httpBasic(basic -> basic.authenticationEntryPoint(
+            (request, response, ex) -> response.sendError(401, "No autenticado")));
+    return http.build();
+}
 }
