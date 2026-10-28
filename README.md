@@ -280,4 +280,4 @@ Cada uno hizo diferentes partes de la base de datos con los casos de uso que se 
 
 ## Entregables
 
-- **Video de la implementación (YouTube):** https://www.youtube.com/watch?v=1sGQfpHJzcY
+- **Video de la implementación (YouTube):** [Visita mi sitio web]([https://misitio.com](https://youtu.be/1sGQfpHJzcY))
