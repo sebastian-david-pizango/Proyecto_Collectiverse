@@ -1,52 +1,154 @@
-#  Collectiverse
+# Collectiverse
 
-> Plataforma web para coleccionistas: publica, intercambia, califica y guarda tus productos coleccionables favoritos.
+**Siglas:** CV
 
-![Java](https://img.shields.io/badge/Java-25-orange?logo=openjdk)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-Backend-6DB33F?logo=springboot&logoColor=white)
-![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&logoColor=white)
-![Codespaces](https://img.shields.io/badge/Dev-GitHub%20Codespaces-181717?logo=github)
+Curso: Ingeniería Web · Semestre VII · Facultad de Ingenierías y Arquitectura · Universidad La Salle
+Docente: Richart Escobedo Quispe
 
----
+## Integrantes
 
-##  Descripción
+- Joel Choquepata
+- Joaquin Torres
+- Sebastian David
+- Franco Rojas
 
-**Collectiverse** es un proyecto académico de Ingeniería Web (*Proyecto_IW*) que modela una comunidad de coleccionistas. Los usuarios pueden organizar sus productos en colecciones, publicarlos para venta o intercambio, marcar favoritos, calificar a otros usuarios y reportar contenido inapropiado.
+## Descripción del proyecto
 
-Actualmente el repositorio contiene la **capa de dominio** del backend: el modelo de datos (entidades) y sus repositorios de acceso a datos, construidos con Spring Boot.
+Collectiverse es una plataforma web para coleccionistas. Permite registrar productos coleccionables organizados por categorías y colecciones, publicarlos para venta o intercambio, guardarlos como favoritos, calificar publicaciones y reportar contenido inadecuado.
 
-##  Integrantes
-
-| Nombre |
-| --- |
-| Joel Choquepata |
-| Joaquin Torres |
-| Sebastian David |
-| Franco Rojas |
+Este repositorio contiene el **backend** de la aplicación, desarrollado con **Spring Boot (Java 25)** y **Spring Data JPA**, con una base de datos **PostgreSQL alojada en Neon**.
 
 ## Tecnologías
 
-- **Lenguaje:** Java 25 (JDK 25)
-- **Framework:** Spring Boot
-- **Persistencia:** Spring Data JPA (entidades + repositorios)
-- **Gestión de dependencias:** Maven
-- **Entorno de desarrollo:** GitHub Codespaces + Dev Containers
+| Componente | Tecnología |
+|---|---|
+| Lenguaje | Java 25 |
+| Framework | Spring Boot |
+| Persistencia | Spring Data JPA / Hibernate |
+| Base de datos | PostgreSQL (Neon) |
+| Entorno de desarrollo | GitHub Codespaces + Dev Container |
 
 ## Modelo de datos
 
-El diagrama completo de la base de datos está en [`Diagrama.png`](./Diagrama.png).
+### Diagrama Entidad-Relación (DER)
 
-| Entidad | Descripción |
-| --- | --- |
-| `Category` | Categorías para clasificar los productos. |
-| `CollectionEntity` | Colecciones que agrupan los productos de un usuario. |
-| `Product` | Producto coleccionable. |
-| `ProductImage` | Imágenes asociadas a un producto. |
-| `Publication` | Publicación de un producto en la plataforma. |
-| `PublicationExchange` | Propuestas o registros de intercambio ligados a una publicación. |
-| `Favorite` | Productos o publicaciones marcadas como favoritas. |
-| `Rating` | Calificaciones entre usuarios. |
-| `Report` | Reportes de contenido o usuarios. |
+![DER de Collectiverse](Diagrama.png)
+
+### Relaciones principales
+
+- `category` 1 — N `collection`
+- `category` 1 — N `product`
+- `collection` 1 — N `product` (la colección es opcional en el producto)
+- `product` 1 — N `product_image`
+- `product` 1 — N `publication`
+- `publication` 1 — N `publication_exchange`
+- `publication` 1 — N `favorite`
+- `publication` 1 — N `rating`
+- `publication` 1 — N `report`
+
+### Campos de auditoría (presentes en las 9 tablas)
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `status` | BOOLEAN | NOT NULL, default `true` | Estado lógico del registro (activo/inactivo) |
+| `created` | TIMESTAMP | NOT NULL, no actualizable | Fecha de creación (automática) |
+| `modified` | TIMESTAMP | | Fecha de última modificación (automática) |
+| `created_by` | VARCHAR(50) | NOT NULL | Usuario que creó el registro |
+| `modified_by` | VARCHAR(50) | | Usuario que modificó el registro |
+
+### Diccionario de datos
+
+#### `category`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_category` | INTEGER | PK (secuencia `sec_category`) | Identificador de la categoría |
+| `name` | VARCHAR(50) | NOT NULL | Nombre de la categoría |
+| `description` | VARCHAR(255) | | Descripción |
+
+#### `collection`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_collection` | INTEGER | PK (secuencia `sec_collection`) | Identificador de la colección |
+| `id_category` | INTEGER | FK → `category.id_category`, NOT NULL | Categoría a la que pertenece |
+| `name` | VARCHAR(100) | NOT NULL | Nombre de la colección |
+| `description` | VARCHAR(255) | | Descripción |
+
+#### `product`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_product` | INTEGER | PK (secuencia `sec_product`) | Identificador del producto |
+| `id_category` | INTEGER | FK → `category.id_category`, NOT NULL | Categoría del producto |
+| `id_collection` | INTEGER | FK → `collection.id_collection`, NULL | Colección del producto (opcional) |
+| `name` | VARCHAR(100) | NOT NULL | Nombre del producto |
+| `stock` | INTEGER | NOT NULL | Unidades disponibles |
+| `price` | NUMERIC(10,2) | NOT NULL | Precio |
+
+#### `product_image`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_image` | INTEGER | PK (secuencia `sec_product_image`) | Identificador de la imagen |
+| `id_product` | INTEGER | FK → `product.id_product`, NOT NULL | Producto al que pertenece |
+| `url` | VARCHAR(255) | NOT NULL | URL de la imagen |
+| `image_order` | INTEGER | | Orden de visualización |
+
+#### `publication`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_publication` | INTEGER | PK (secuencia `sec_publication`) | Identificador de la publicación |
+| `username` | VARCHAR(50) | NOT NULL | Usuario que publica |
+| `id_product` | INTEGER | FK → `product.id_product`, NOT NULL | Producto publicado |
+| `title` | VARCHAR(100) | NOT NULL | Título |
+| `description` | VARCHAR(255) | | Descripción |
+| `type` | VARCHAR(20) | NOT NULL | Tipo de publicación (venta, intercambio, etc.) |
+| `state` | VARCHAR(20) | NOT NULL | Estado de la publicación |
+| `date` | TIMESTAMP | NOT NULL | Fecha de publicación (por defecto, la actual) |
+
+#### `publication_exchange`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_exchange` | INTEGER | PK (secuencia `sec_publication_exchange`) | Identificador del ítem de intercambio |
+| `id_publication` | INTEGER | FK → `publication.id_publication`, NOT NULL | Publicación asociada |
+| `requested_name` | VARCHAR(100) | NOT NULL | Nombre del ítem solicitado a cambio |
+| `description` | VARCHAR(255) | | Descripción |
+| `quantity` | INTEGER | | Cantidad solicitada |
+
+#### `favorite`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_favorite` | INTEGER | PK (secuencia `sec_favorite`) | Identificador del favorito |
+| `username` | VARCHAR(50) | NOT NULL | Usuario que marca el favorito |
+| `id_publication` | INTEGER | FK → `publication.id_publication`, NOT NULL | Publicación marcada |
+| `date` | TIMESTAMP | NOT NULL | Fecha en que se marcó (por defecto, la actual) |
+
+#### `rating`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_rating` | INTEGER | PK (secuencia `sec_rating`) | Identificador de la calificación |
+| `username` | VARCHAR(50) | NOT NULL | Usuario que califica |
+| `id_publication` | INTEGER | FK → `publication.id_publication`, NOT NULL | Publicación calificada |
+| `user_rating` | INTEGER | | Puntaje para el usuario vendedor |
+| `publication_rating` | INTEGER | | Puntaje para la publicación |
+| `comment` | VARCHAR(255) | | Comentario |
+| `date` | TIMESTAMP | NOT NULL | Fecha de la calificación (por defecto, la actual) |
+
+#### `report`
+
+| Columna | Tipo | Restricciones | Descripción |
+|---|---|---|---|
+| `id_report` | INTEGER | PK (secuencia `sec_report`) | Identificador del reporte |
+| `username` | VARCHAR(50) | NOT NULL | Usuario que reporta |
+| `id_publication` | INTEGER | FK → `publication.id_publication`, NOT NULL | Publicación reportada |
+| `reason` | VARCHAR(255) | NOT NULL | Motivo del reporte |
+| `state` | VARCHAR(20) | NOT NULL | Estado del reporte |
+| `date` | TIMESTAMP | NOT NULL | Fecha del reporte (por defecto, la actual) |
 
 ## Estructura del repositorio
 
@@ -100,40 +202,64 @@ Proyecto_Collectiverse/
 └── README.md
 ```
 
-### Detalle de carpetas
+### Carpeta `.devcontainer`
 
-- **`.devcontainer/`**: usamos GitHub Codespaces y, como el entorno debe recrearse cada vez que trabajamos, esta carpeta instala automáticamente el JDK 25 al crear el Codespace, evitando reinstalarlo a mano.
-- **`collectiverse/`**: contiene el proyecto Spring Boot con las entidades (que representan las tablas del modelo de datos) y sus respectivos repositorios.
+Trabajamos en GitHub Codespaces y, por restricciones de la plataforma, debemos borrar y recrear el Codespace cada vez que trabajamos. Para no reinstalar el JDK 25 manualmente, esta carpeta lo instala automáticamente al crear el Codespace.
 
-## Cómo ejecutar el proyecto
+### Carpeta `collectiverse`
 
-### Opción 1: GitHub Codespaces (recomendada)
+Contiene el proyecto Spring Boot con las entidades JPA (que generan las tablas del modelo de datos) y sus repositorios.
 
-1. En el repositorio, haz clic en **Code → Codespaces → Create codespace on main**.
-2. Espera a que el Dev Container termine de instalar el JDK 25.
-3. En la terminal:
+## Ejecución
+
+1. Abrir el repositorio en GitHub Codespaces (el JDK 25 se instala solo).
+2. Configurar las credenciales de la base de datos como variables de entorno (ver abajo).
+3. Ejecutar:
 
 ```bash
 cd collectiverse
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
 
-### Opción 2: Entorno local
+### Configuración de la base de datos
 
-**Requisitos:** JDK 25 y Git.
+`application.properties` debe leer las credenciales desde variables de entorno y no tenerlas escritas en el código:
 
-```bash
-git clone https://github.com/sebastian-david-pizango/Proyecto_Collectiverse.git
-cd Proyecto_Collectiverse/collectiverse
-./mvnw spring-boot:run
+```properties
+spring.datasource.url=${DB_URL}
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
 ```
 
-> En Windows usa `mvnw.cmd spring-boot:run`.
+### Captura de la ejecución
 
-### Ejecutar las pruebas
+<!-- COMPLETAR: subir una captura de la app levantada (consola de Spring Boot) y de las tablas en Neon -->
+![Ejecución de la aplicación](capturas/ejecucion.png)
 
-```bash
-./mvnw test
-```
+## Flujo de trabajo en equipo
 
+### Ramas
 
+| Rama |
+|---|---|
+| `main` | 
+| `Joel` | 
+| `Sebastian` | 
+| `Joaquin` | 
+| `Nicolas` | 
+
+### Distribución del trabajo
+
+Cada uno hizo diferentes partes de la base de datos con los casos de uso que se verá mas abajo 
+
+| Integrante | Responsabilidad |
+|---|---|
+| Joel Choquepata | Casos de uso: Controller y el service|
+| Joaquin Torres | Spring Security |
+| Sebastian David | Entidades y conexión con la base de datos|
+| Franco Rojas | Casos de uso: Excepciones, response y request|
+
+## Entregables
+
+- **Video de la implementación (YouTube):** 
