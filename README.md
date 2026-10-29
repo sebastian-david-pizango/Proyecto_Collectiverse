@@ -153,53 +153,51 @@ Este repositorio contiene el **backend** de la aplicación, desarrollado con **S
 ## Estructura del repositorio
 
 ```
-Proyecto_Collectiverse/
-├── .devcontainer/
-│   └── devcontainer.json *            # Instala el JDK 25 al crear el Codespace
-├── .vscode/
-│   └── settings.json *                # Configuración del editor
-├── collectiverse/
-│   ├── .mvn/ *
-│   │   └── wrapper/
-│   │       └── maven-wrapper.properties *
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/
-│   │   │   │   └── com/collectiverse/collectiverse/
-│   │   │   │       ├── CollectiverseApplication.java
-│   │   │   │       └── dominio/
-│   │   │   │           ├── entity/
-│   │   │   │           │   ├── Category.java
-│   │   │   │           │   ├── CollectionEntity.java
-│   │   │   │           │   ├── Favorite.java
-│   │   │   │           │   ├── Product.java
-│   │   │   │           │   ├── ProductImage.java
-│   │   │   │           │   ├── Publication.java
-│   │   │   │           │   ├── PublicationExchange.java
-│   │   │   │           │   ├── Rating.java
-│   │   │   │           │   └── Report.java
-│   │   │   │           └── repository/
-│   │   │   │               ├── RepoCategory.java
-│   │   │   │               ├── RepoCollection.java
-│   │   │   │               ├── RepoFavorite.java
-│   │   │   │               ├── RepoProduct.java
-│   │   │   │               ├── RepoProductImage.java
-│   │   │   │               ├── RepoPublication.java
-│   │   │   │               ├── RepoPublicationExchange.java
-│   │   │   │               ├── RepoRating.java
-│   │   │   │               └── RepoReport.java
-│   │   │   └── resources/
-│   │   │       └── application.properties
-│   │   └── test/
-│   │       └── java/
-│   │           └── com/collectiverse/collectiverse/
-│   │               └── CollectiverseApplicationTests.java
-│   ├── .gitignore *
-│   ├── mvnw *
-│   ├── mvnw.cmd *
-│   └── pom.xml *
-├── Diagrama.png
-└── README.md
+src/
+└── main/
+    ├── java/
+    │   └── com/collectiverse/collectiverse/
+    │       ├── controller/
+    │       │   └── AuthController.java
+    │       ├── cu/                                 # Casos de uso
+    │       │   ├── category/
+    │       │   ├── collectionEntity/
+    │       │   ├── favorite/
+    │       │   ├── product/
+    │       │   ├── productImage/
+    │       │   ├── publication/
+    │       │   ├── publicationExchange/
+    │       │   ├── rating/
+    │       │   ├── report/
+    │       │   └── shared/
+    │       │       └── exception/
+    │       ├── dominio/
+    │       │   ├── entity/                         # Entidades del modelo de datos
+    │       │   │   ├── Category.java
+    │       │   │   ├── CollectionEntity.java
+    │       │   │   ├── Favorite.java
+    │       │   │   ├── Product.java
+    │       │   │   ├── ProductImage.java
+    │       │   │   ├── Publication.java
+    │       │   │   ├── PublicationExchange.java
+    │       │   │   ├── Rating.java
+    │       │   │   └── Report.java
+    │       │   └── repository/                     # Repositorios (acceso a datos)
+    │       │       ├── RepoCategory.java
+    │       │       ├── RepoCollection.java
+    │       │       ├── RepoFavorite.java
+    │       │       ├── RepoProduct.java
+    │       │       ├── RepoProductImage.java
+    │       │       ├── RepoPublication.java
+    │       │       ├── RepoPublicationExchange.java
+    │       │       ├── RepoRating.java
+    │       │       └── RepoReport.java
+    │       ├── security/
+    │       │   ├── AdminInicial.java
+    │       │   └── SecurityConfig.java
+    │       └── CollectiverseApplication.java       # Clase principal (Spring Boot)
+    └── resources/
+        └── application.properties                  # Configuración de la aplicación
 ```
 
 ### Carpeta `.devcontainer`
